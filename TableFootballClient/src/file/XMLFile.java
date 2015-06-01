@@ -86,14 +86,14 @@ public class XMLFile {
 
     public void readFile(String nameHeader){
         try {
-            File xmlFile = new File(nameFile);
+            /*File xmlFile = new File(nameFile);
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(xmlFile);
             document.getDocumentElement().normalize();
 
             StudentTableModel tableModel = new StudentTableModel(new ArrayList<StudentModel>());
-            StudentTableView tableView = new StudentTableView(tableModel,new Socket());
+            StudentTableView tableView = new StudentTableView();
 
             ChangeTablePanel changeTablePanel = new ChangeTablePanel(tableView);
             TablePanel mainPage = new TablePanel(tableView, changeTablePanel);
@@ -128,7 +128,7 @@ public class XMLFile {
             mainPage.getChangeTablePanel().getAllRecord().setText(
                     String.valueOf(mainPage.getTableView().getCountRecord()));
             mainPage.getChangeTablePanel().getAllPage().setText(
-                    String.valueOf(mainPage.getTableView().getNumberPage()));
+                    String.valueOf(mainPage.getTableView().getNumberPage()));*/
         } catch (Exception e) {
             e.printStackTrace();
         }

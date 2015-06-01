@@ -7,13 +7,19 @@ import javax.xml.transform.TransformerException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class SaveMenuListener implements ActionListener {
     private JTabbedPane tableTab;
     private JFileChooser jFileChooser;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
-    public SaveMenuListener(JTabbedPane tableTab) {
+    public SaveMenuListener(JTabbedPane tableTab, ObjectInputStream inputStream, ObjectOutputStream outputStream) {
         this.tableTab = tableTab;
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         jFileChooser = new JFileChooser();
     }
 

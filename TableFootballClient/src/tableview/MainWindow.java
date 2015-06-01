@@ -23,6 +23,9 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.BorderLayout;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class MainWindow {
@@ -117,30 +120,35 @@ public class MainWindow {
         JTabbedPane tableTab = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
         jfMainWin.add(tableTab, BorderLayout.CENTER);
 
-        NewTableListener newTable = new NewTableListener(tableTab, jtbMain, socket);
-        jbNew.addActionListener(newTable);
-        jmiCreate.addActionListener(newTable);
+        try {
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+            NewTableListener newTable = new NewTableListener(tableTab, jtbMain, inputStream,outputStream);
+            jbNew.addActionListener(newTable);
+            jmiCreate.addActionListener(newTable);
 
-        SaveMenuListener saveTable = new SaveMenuListener(tableTab);
-        jbSave.addActionListener(saveTable);
-        jmiSave.addActionListener(saveTable);
+            SaveMenuListener saveTable = new SaveMenuListener(tableTab, inputStream, outputStream);
+            jbSave.addActionListener(saveTable);
+            jmiSave.addActionListener(saveTable);
 
-        OpenMenuListener openTable = new OpenMenuListener(tableTab, jtbMain);
-        jbOpen.addActionListener(openTable);
-        jmiOpen.addActionListener(openTable);
+            OpenMenuListener openTable = new OpenMenuListener(tableTab, jtbMain, inputStream, outputStream);
+            jbOpen.addActionListener(openTable);
+            jmiOpen.addActionListener(openTable);
 
-        jmiExit.addActionListener(new ExitMenuListener());
+            jmiExit.addActionListener(new ExitMenuListener());
 
-        AdditionListener additionStudent = new AdditionListener(jfMainWin, tableTab);
-        jbtAddition.addActionListener(additionStudent);
-        jmiAddition.addActionListener(additionStudent);
+            AdditionListener additionStudent = new AdditionListener(jfMainWin, tableTab);
+            jbtAddition.addActionListener(additionStudent);
+            jmiAddition.addActionListener(additionStudent);
 
-        SearchDeleteListener searchDeleteListener = new SearchDeleteListener(jfMainWin, tableTab);
-        jbtSearch.addActionListener(searchDeleteListener);
-        jmiSearch.addActionListener(searchDeleteListener);
-        jbtDelete.addActionListener(searchDeleteListener);
-        jmiDelete.addActionListener(searchDeleteListener);
-
+            SearchDeleteListener searchDeleteListener = new SearchDeleteListener(jfMainWin, tableTab, inputStream,outputStream);
+            jbtSearch.addActionListener(searchDeleteListener);
+            jmiSearch.addActionListener(searchDeleteListener);
+            jbtDelete.addActionListener(searchDeleteListener);
+            jmiDelete.addActionListener(searchDeleteListener);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         jfMainWin.setVisible(true);
     }
 }

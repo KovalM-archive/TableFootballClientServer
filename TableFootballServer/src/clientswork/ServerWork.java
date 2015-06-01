@@ -31,25 +31,35 @@ public class ServerWork extends Thread {
     public void run() {
         try {
             StudentsList studentsList = new StudentsList();
-            StudentsList studentsListSearch = new StudentsList();
-
+            StudentsList studentsListBuffer = new StudentsList();
+            Object searchStudentTerms;
             String command;
             workPanel.getTextArea().append(clientName + " Client connected\n");
 
             while (true) {
                 command = (String) inputStream.readObject();
                 workPanel.getTextArea().append(clientName + " " + command + "\n");
-                if (command.equals("Get count records")) {
-                    outputStream.writeObject(studentsList.getCountRecord());
-                } else if (command.equals("Add student")) {
+                if (command.equals(CommandConst.NEW_TABLE)) {
+                    studentsList = new StudentsList();
+                } else if (command.equals(CommandConst.ADD_STUDENT)) {
                     studentsList.addStudent((StudentModel) inputStream.readObject());
-                } else if (command.equals("Remove student")) {
+                } else if (command.equals(CommandConst.REMOVE_STUDENT)) {
                     studentsList.removeStudent((StudentModel) inputStream.readObject());
-                } else if (command.equals("Get student at index")) {
+                } else if (command.equals(CommandConst.GET_COUNT_RECORDS)) {
+                    outputStream.writeObject(studentsList.getCountRecord());
+                } else if (command.equals(CommandConst.GET_STUDENT_AT_INDEX)) {
                     int num = (Integer) inputStream.readObject();
                     outputStream.writeObject(studentsList.getStudentAtIndex(num));
-                } else if (command.equals("New table")) {
+                } else if (command.equals(CommandConst.FIND)){
+                    studentsListBuffer = studentsList;
                     studentsList = new StudentsList();
+                }else if (command.equals(CommandConst.FIND_AND_REMOVE)){
+
+                } else if (command.equals(CommandConst.END_FIND_REMOVE)){
+                    studentsList = studentsListBuffer;
+                } else if (command.equals(CommandConst.GET_FIND_TERMS)){
+                    searchStudentTerms = inputStream.readObject();
+                    studentsList.setStudentList(studentsListBuffer.findStudents((SearchStudentTerms)searchStudentTerms));
                 }
             }
         } catch (ClassNotFoundException e) {

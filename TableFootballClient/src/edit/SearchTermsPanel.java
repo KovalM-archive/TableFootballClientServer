@@ -17,12 +17,20 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.GregorianCalendar;
 
 public class SearchTermsPanel extends JPanel {
     private SearchStudentTerms currentStudent;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
-    public SearchTermsPanel(final TablePanel tablePanel, final TablePanel tablePanelTable, String textButton){
+    public SearchTermsPanel(final TablePanel tablePanel, final TablePanel tablePanelTable,
+                            String textButton, ObjectInputStream inputStream, final ObjectOutputStream outputStream){
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         currentStudent = new SearchStudentTerms();
         currentStudent.allFalse();
         this.setLayout(new GridBagLayout());
@@ -222,39 +230,32 @@ public class SearchTermsPanel extends JPanel {
                 if (currentStudent.isPositionFlag()){
                     currentStudent.setPosition(Integer.parseInt(enterPosition.getText()));
                 }
+                try{
+                    outputStream.writeObject("Get find terms");
+                    outputStream.writeObject(currentStudent);
+                    /*StudentTableView tableViewAnswer = tablePanel.getTableView();
+                    ChangeTablePanel changeTablePanelAnswer = tablePanel.getChangeTablePanel();
+                    StudentTableView tableView = tablePanelTable.getTableView();
+                    ChangeTablePanel changeTablePanel = tablePanelTable.getChangeTablePanel();
 
-                StudentTableView tableViewAnswer = tablePanel.getTableView();
-                ChangeTablePanel changeTablePanelAnswer = tablePanel.getChangeTablePanel();
-                StudentTableView tableView = tablePanelTable.getTableView();
-                ChangeTablePanel changeTablePanel = tablePanelTable.getChangeTablePanel();
 
-                int n = tableView.getCountRecord();
-                for (int i = 0; i < n; i++) {
-                    StudentModel student = tableView.getStudentAtIndex(i);
-                    if (foundAgreement(student)){
-                        StudentModel newStudent = student.clone();
-                        tableViewAnswer.addStudent(newStudent);
-                        changeTablePanelAnswer.getAllRecord().setText(
-                                String.valueOf(tableViewAnswer.getCountRecord()));
-                        changeTablePanelAnswer.getAllPage().setText(
-                                String.valueOf(tableViewAnswer.getNumberPage()));
-                    }
-                }
-
-                if (e.getActionCommand().equals("Найти и удалить")){
-                    int i=0;
-                    while (i<tableView.getCountRecord()){
-                        StudentModel student = tableView.getStudentAtIndex(i);
-                        if (foundAgreement(student)){
-                            tableView.removeStudent(student);
-                            changeTablePanel.getAllRecord().setText(
+                    if (e.getActionCommand().equals("Найти и удалить")){
+                        int i=0;
+                        while (i<tableView.getCountRecord()){
+                            StudentModel student = tableView.getStudentAtIndex(i);
+                            if (foundAgreement(student)){
+                                tableView.removeStudent(student);
+                                changeTablePanel.getAllRecord().setText(
                                     String.valueOf(tableView.getCountRecord()));
-                            changeTablePanel.getAllPage().setText(
+                                changeTablePanel.getAllPage().setText(
                                     String.valueOf(tableView.getNumberPage()));
-                        } else{
-                            i++;
+                            } else{
+                               i++;
+                            }
                         }
-                    }
+                    }*/
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             }
         });

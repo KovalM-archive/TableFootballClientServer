@@ -14,17 +14,24 @@ import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class SearchDeleteListener implements ActionListener{
-    JTabbedPane tableTab;
-    JFrame mainWindow;
-    JDialog searchStudentFrame;
+    private JTabbedPane tableTab;
+    private JFrame mainWindow;
+    private JDialog searchStudentFrame;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
-    public SearchDeleteListener(JFrame mainWindow,JTabbedPane tableTab){
+    public SearchDeleteListener(JFrame mainWindow,JTabbedPane tableTab, ObjectInputStream inputStream, ObjectOutputStream outputStream){
         this.mainWindow = mainWindow;
         this.tableTab = tableTab;
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
     }
 
     @Override
@@ -34,27 +41,32 @@ public class SearchDeleteListener implements ActionListener{
         searchStudentFrame.setLocationRelativeTo(mainWindow);
         searchStudentFrame.setVisible(true);
         searchStudentFrame.setLayout(new BorderLayout());
-
-        StudentTableModel tableModel = new StudentTableModel(new ArrayList<StudentModel>());
-        StudentTableView tableView = new StudentTableView(tableModel,new Socket());
-        ChangeTablePanel changeTablePanel = new ChangeTablePanel(tableView);
-        TablePanel mainPage = new TablePanel(tableView, changeTablePanel);
-        TablePanel tablePanel = (TablePanel)tableTab.getSelectedComponent();
-        mainPage.setLayout(new BorderLayout());
-        JScrollPane scrollpane = new JScrollPane(tableView);
-        mainPage.add(scrollpane, BorderLayout.CENTER);
-        mainPage.add(changeTablePanel, BorderLayout.SOUTH);
-
-        SearchTermsPanel searchTermsPanel = new SearchTermsPanel(mainPage, tablePanel,e.getActionCommand());
         JLabel searchText;
-        if (e.getActionCommand() == "Найти"){
-            searchText = new JLabel("Найдено:");
-        }else{
-            searchText = new JLabel("Найдено и удалено:");
-        }
+        try {
+            if (e.getActionCommand() == "Найти"){
+                searchText = new JLabel("Найдено:");
+                outputStream.writeObject("Find");
+            }else{
+                searchText = new JLabel("Найдено и удалено:");
+                outputStream.writeObject("Find and remove");
+            }
+            StudentTableModel tableModel = new StudentTableModel(new ArrayList<StudentModel>());
+            StudentTableView tableView = new StudentTableView(tableModel,inputStream,outputStream);
+            ChangeTablePanel changeTablePanel = new ChangeTablePanel(tableView);
+            TablePanel mainPage = new TablePanel(tableView, changeTablePanel);
+            TablePanel tablePanel = (TablePanel)tableTab.getSelectedComponent();
+            mainPage.setLayout(new BorderLayout());
+            JScrollPane scrollpane = new JScrollPane(tableView);
+            mainPage.add(scrollpane, BorderLayout.CENTER);
+            mainPage.add(changeTablePanel, BorderLayout.SOUTH);
 
-        searchStudentFrame.add(searchTermsPanel,BorderLayout.SOUTH);
-        searchStudentFrame.add(searchText,BorderLayout.NORTH);
-        searchStudentFrame.add(mainPage,BorderLayout.CENTER);
+            SearchTermsPanel searchTermsPanel = new SearchTermsPanel(mainPage, tablePanel,e.getActionCommand(),inputStream, outputStream);
+
+            searchStudentFrame.add(searchTermsPanel,BorderLayout.SOUTH);
+            searchStudentFrame.add(searchText,BorderLayout.NORTH);
+            searchStudentFrame.add(mainPage,BorderLayout.CENTER);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 }

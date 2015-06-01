@@ -7,28 +7,20 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StudentTableView extends JTable {
     StudentTableModel tableModel;
     private int numberPage;
-    private Socket socket;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
-    public StudentTableView(StudentTableModel tableModel,Socket socket){
+    public StudentTableView(StudentTableModel tableModel,ObjectInputStream inputStream,ObjectOutputStream outputStream){
         super(tableModel);
         this.tableModel = tableModel;
-        this.socket = socket;
-
-        try {
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            inputStream = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
 
         tableModel.setNumberRecordsOnPage(1);
         tableModel.setIndexPage(1);
@@ -118,14 +110,14 @@ public class StudentTableView extends JTable {
         goToPage(tableModel.getIndexPage());
     }
 
-    public StudentModel getStudentAtIndex(int x){
+    public StudentModel getStudentAtIndex(int numer){
         int countRecods = getCountRecord();
         StudentModel currentStudent = null;
 
-        if (x>=0 && x < countRecods){
+        if (numer>=0 && numer < countRecods){
             try {
                 outputStream.writeObject("Get student at index");
-                outputStream.writeObject(x);
+                outputStream.writeObject(numer);
                 boolean flag = false;
                 while (true){
                     try{

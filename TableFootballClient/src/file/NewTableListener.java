@@ -28,22 +28,20 @@ public class NewTableListener implements ActionListener {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
 
-    public NewTableListener(JTabbedPane tableTab,JToolBar jtbMain,Socket socket){
+    public NewTableListener(JTabbedPane tableTab,JToolBar jtbMain,ObjectInputStream inputStream, ObjectOutputStream outputStream){
         this.tableTab = tableTab;
         this.jtbMain = jtbMain;
-        this.socket = socket;
+        this.outputStream = outputStream;
+        this.inputStream = inputStream;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            outputStream = new ObjectOutputStream(socket.getOutputStream());
-            inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream.writeObject("New table");
-
             jtbMain.setVisible(true);
             StudentTableModel tableModel = new StudentTableModel(new ArrayList<StudentModel>());
-            StudentTableView tableView = new StudentTableView(tableModel,socket);
+            StudentTableView tableView = new StudentTableView(tableModel,inputStream,outputStream);
             ChangeTablePanel changeTablePanel = new ChangeTablePanel(tableView);
             TablePanel mainPage = new TablePanel(tableView, changeTablePanel);
 

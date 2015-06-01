@@ -3,10 +3,12 @@ package clientswork;
 import window.ServerWorkPanel;
 
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.BorderLayout;
+import java.awt.ScrollPane;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -38,7 +40,7 @@ public class ClientWaiter implements Runnable {
         ServerWorkPanel serverWorkPanel = new ServerWorkPanel();
 
         serverWorkPanel.setSize(jfMainWin.getWidth(), jfMainWin.getHeight());
-        jfMainWin.add(serverWorkPanel, BorderLayout.CENTER);
+        jfMainWin.add(new JScrollPane(serverWorkPanel), BorderLayout.CENTER);
         jfMainWin.setVisible(true);
 
         serverWorkPanel.getTextArea().append("Server start work\n");

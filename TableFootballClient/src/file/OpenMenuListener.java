@@ -5,15 +5,21 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class OpenMenuListener implements ActionListener {
     private JTabbedPane tableTab;
     private JToolBar jtbMain;
     private JFileChooser jFileChooser;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
 
-    public OpenMenuListener(JTabbedPane tableTab,JToolBar jtbMain){
+    public OpenMenuListener(JTabbedPane tableTab,JToolBar jtbMain, ObjectInputStream inputStream, ObjectOutputStream outputStream){
         this.tableTab = tableTab;
         this.jtbMain = jtbMain;
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         jFileChooser = new JFileChooser();
     }
 
