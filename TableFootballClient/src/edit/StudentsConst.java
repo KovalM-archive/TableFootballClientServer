@@ -1,6 +1,6 @@
 package edit;
 
 public final class StudentsConst {
-    public static final String[] FACULTY = {"ФИТУ","КСИС","ФРЭ","ФКП","ФТК","ИЭФ","ВОЯКИ"};
+    public static final String[] FACULTY = {"KSIS","FITU","FRA","FKP","FTK","IAF","VOYAKI"};
     public static final Integer[] SQUAD = {1, 2, 3};
 }

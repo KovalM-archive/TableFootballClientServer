@@ -1,8 +1,10 @@
-package clientswork;
+package edit;
 
 import tablemodel.StudentModel;
 
-public class SearchStudentTerms extends StudentModel {
+import java.io.Serializable;
+
+public class SearchStudentTerms extends StudentModel implements Serializable{
     private boolean firstNameFlag;
     private boolean secondNameFlag;
     private boolean thirdNameFlag;
@@ -11,6 +13,11 @@ public class SearchStudentTerms extends StudentModel {
     private boolean facultyNameFlag;
     private boolean squadFlag;
     private boolean positionFlag;
+
+    public SearchStudentTerms(){
+        super();
+        allFalse();
+    }
 
     public boolean isFirstNameFlag() {
         return firstNameFlag;

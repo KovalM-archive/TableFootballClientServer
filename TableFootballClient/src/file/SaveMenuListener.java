@@ -1,6 +1,10 @@
 package file;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -11,30 +15,23 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class SaveMenuListener implements ActionListener {
-    private JTabbedPane tableTab;
-    private JFileChooser jFileChooser;
     private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
+    private JFrame mainWindow;
 
-    public SaveMenuListener(JTabbedPane tableTab, ObjectInputStream inputStream, ObjectOutputStream outputStream) {
-        this.tableTab = tableTab;
-        this.inputStream = inputStream;
+    public SaveMenuListener(JFrame mainWindow, ObjectOutputStream outputStream) {
+        this.mainWindow = mainWindow;
         this.outputStream = outputStream;
-        jFileChooser = new JFileChooser();
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ( jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION ) {
-            try {
-                new XMLFile(jFileChooser.getSelectedFile().getPath(), tableTab).writeFile();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } catch (TransformerException e1) {
-                e1.printStackTrace();
-            } catch (ParserConfigurationException e1) {
-                e1.printStackTrace();
-            }
+        try {
+            outputStream.writeObject("Save");
+            String  nameFile = JOptionPane.showInputDialog("Enter name of file");
+            outputStream.writeObject(nameFile);
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 }

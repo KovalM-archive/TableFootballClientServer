@@ -1,4 +1,4 @@
-import clientswork.ClientWaiter;
+import edit.ClientWaiter;
 
 import javax.swing.SwingUtilities;
 

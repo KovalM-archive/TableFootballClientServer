@@ -48,7 +48,6 @@ public class StudentTableView extends JTable {
     public void goToPage(int newPageIndex){
         if (newPageIndex <= numberPage){
             List<StudentModel> studentListBuffer = new ArrayList<StudentModel>();
-
             int l = tableModel.getNumberRecordsOnPage()*(newPageIndex-1);
             int r = l + tableModel.getNumberRecordsOnPage();
             int countRecods = getCountRecord();
@@ -58,7 +57,6 @@ public class StudentTableView extends JTable {
                 }
                 studentListBuffer.add(getStudentAtIndex(i-1));
             }
-
             StudentTableModel newTableModel = new StudentTableModel(studentListBuffer);
             newTableModel.setIndexPage(newPageIndex);
             newTableModel.setNumberRecordsOnPage(tableModel.getNumberRecordsOnPage());
@@ -89,7 +87,7 @@ public class StudentTableView extends JTable {
         return countRecord;
     }
 
-    private void calculateNumberPage(){
+    public void calculateNumberPage(){
         int x = 0;
         int numberRecordsOnPage = tableModel.getNumberRecordsOnPage();
         int countRecord = getCountRecord();

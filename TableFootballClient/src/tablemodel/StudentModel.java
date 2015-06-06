@@ -3,7 +3,7 @@ package tablemodel;
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 
-public class StudentModel extends Object implements Cloneable,Serializable {
+public class StudentModel implements Cloneable,Serializable {
     private String firstName;
     private String secondName;
     private String thirdName;

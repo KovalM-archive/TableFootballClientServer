@@ -1,4 +1,4 @@
-package clientswork;
+package edit;
 
 import window.ServerWorkPanel;
 
@@ -8,7 +8,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.BorderLayout;
-import java.awt.ScrollPane;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

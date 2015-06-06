@@ -1,6 +1,6 @@
 package tablemodel;
 
-import clientswork.SearchStudentTerms;
+import edit.SearchStudentTerms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +48,21 @@ public class StudentsList {
             if (foundAgreement(student,searchStudentTerms)){
                 StudentModel newStudent = student.clone();
                 resultStudentList.add(newStudent);
-                System.out.println(newStudent.getFirstName());
             }
         }
         return resultStudentList;
+    }
+
+    public void findRemoveStudents(SearchStudentTerms searchStudentTerms){
+        int number = studentList.size();
+        for (int i = 0; i < number; i++) {
+            StudentModel student = studentList.get(i);
+            if (foundAgreement(student,searchStudentTerms)){
+                studentList.remove(student);
+                i--;
+                number--;
+            }
+        }
     }
 
     private boolean foundAgreement(StudentModel student,SearchStudentTerms currentStudent){

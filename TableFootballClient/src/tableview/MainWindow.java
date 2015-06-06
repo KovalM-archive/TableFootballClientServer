@@ -127,11 +127,11 @@ public class MainWindow {
             jbNew.addActionListener(newTable);
             jmiCreate.addActionListener(newTable);
 
-            SaveMenuListener saveTable = new SaveMenuListener(tableTab, inputStream, outputStream);
+            SaveMenuListener saveTable = new SaveMenuListener(jfMainWin, outputStream);
             jbSave.addActionListener(saveTable);
             jmiSave.addActionListener(saveTable);
 
-            OpenMenuListener openTable = new OpenMenuListener(tableTab, jtbMain, inputStream, outputStream);
+            OpenMenuListener openTable = new OpenMenuListener(tableTab, jtbMain, outputStream, inputStream, jfMainWin);
             jbOpen.addActionListener(openTable);
             jmiOpen.addActionListener(openTable);
 

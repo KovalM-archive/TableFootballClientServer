@@ -24,13 +24,10 @@ import java.util.GregorianCalendar;
 
 public class SearchTermsPanel extends JPanel {
     private SearchStudentTerms currentStudent;
-    private ObjectOutputStream outputStream;
-    private ObjectInputStream inputStream;
 
-    public SearchTermsPanel(final TablePanel tablePanel, final TablePanel tablePanelTable,
-                            String textButton, ObjectInputStream inputStream, final ObjectOutputStream outputStream){
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+
+    public SearchTermsPanel(final TablePanel tablePanel,
+                            String textButton, final ObjectOutputStream outputStream){
         currentStudent = new SearchStudentTerms();
         currentStudent.allFalse();
         this.setLayout(new GridBagLayout());
@@ -233,27 +230,16 @@ public class SearchTermsPanel extends JPanel {
                 try{
                     outputStream.writeObject("Get find terms");
                     outputStream.writeObject(currentStudent);
-                    /*StudentTableView tableViewAnswer = tablePanel.getTableView();
-                    ChangeTablePanel changeTablePanelAnswer = tablePanel.getChangeTablePanel();
-                    StudentTableView tableView = tablePanelTable.getTableView();
-                    ChangeTablePanel changeTablePanel = tablePanelTable.getChangeTablePanel();
-
-
+                    tablePanel.getTableView().calculateNumberPage();
+                    tablePanel.getTableView().goToPage(1);
+                    tablePanel.getChangeTablePanel().getCurrentPageIndex().setText(String.valueOf(1));
+                    tablePanel.getChangeTablePanel().getAllRecord().setText(
+                            String.valueOf(tablePanel.getTableView().getCountRecord()));
+                    tablePanel.getChangeTablePanel().getAllPage().setText(
+                            String.valueOf(tablePanel.getTableView().getNumberPage()));
                     if (e.getActionCommand().equals("Найти и удалить")){
-                        int i=0;
-                        while (i<tableView.getCountRecord()){
-                            StudentModel student = tableView.getStudentAtIndex(i);
-                            if (foundAgreement(student)){
-                                tableView.removeStudent(student);
-                                changeTablePanel.getAllRecord().setText(
-                                    String.valueOf(tableView.getCountRecord()));
-                                changeTablePanel.getAllPage().setText(
-                                    String.valueOf(tableView.getNumberPage()));
-                            } else{
-                               i++;
-                            }
-                        }
-                    }*/
+                        outputStream.writeObject("Remove");
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

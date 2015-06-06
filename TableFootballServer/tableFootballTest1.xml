@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<table>
+<student day="23" faculty="FITU" firstname="Михаил" footballteam="Крабы" month="11" position="17" secondname="Ковалёв" squad="1" thirdname="Владимирович" year="1995"/>
+<student day="1" faculty="KSIS" firstname="Влад" footballteam="ЛД" month="5" position="7" secondname="Джум" squad="3" thirdname="Егорович" year="2015"/>
+<student day="8" faculty="FITU" firstname="Артур" footballteam="Раки" month="5" position="7" secondname="Пинчуков" squad="2" thirdname="Русланович" year="2015"/>
+<student day="8" faculty="FITU" firstname="Павел" footballteam="Раки" month="5" position="18" secondname="Субботин" squad="1" thirdname="Батькович" year="2015"/>
+<student day="4" faculty="KSIS" firstname="Кирилл" footballteam="ЛД" month="5" position="19" secondname="Стахейко" squad="3" thirdname="Батькович" year="2015"/>
+</table>

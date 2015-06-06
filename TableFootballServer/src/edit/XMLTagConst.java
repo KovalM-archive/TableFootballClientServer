@@ -1,6 +1,6 @@
-package file;
+package edit;
 
-public final class XMLTag {
+public final class XMLTagConst {
     public static final String TABLE = "table";
     public static final String STUDENT = "student";
     public static final String FIRST_NAME = "firstname";

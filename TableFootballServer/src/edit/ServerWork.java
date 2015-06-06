@@ -1,14 +1,18 @@
-package clientswork;
+package edit;
 
 import tablemodel.StudentModel;
 import tablemodel.StudentsList;
 import window.ServerWorkPanel;
 
-import java.io.EOFException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerWork extends Thread {
     private Socket socket;
@@ -32,7 +36,7 @@ public class ServerWork extends Thread {
         try {
             StudentsList studentsList = new StudentsList();
             StudentsList studentsListBuffer = new StudentsList();
-            Object searchStudentTerms;
+            SearchStudentTerms searchStudentTerms = null;
             String command;
             workPanel.getTextArea().append(clientName + " Client connected\n");
 
@@ -53,19 +57,38 @@ public class ServerWork extends Thread {
                 } else if (command.equals(CommandConst.FIND)){
                     studentsListBuffer = studentsList;
                     studentsList = new StudentsList();
-                }else if (command.equals(CommandConst.FIND_AND_REMOVE)){
-
+                } else if (command.equals(CommandConst.REMOVE)){
+                    studentsListBuffer.findRemoveStudents(searchStudentTerms);
                 } else if (command.equals(CommandConst.END_FIND_REMOVE)){
                     studentsList = studentsListBuffer;
                 } else if (command.equals(CommandConst.GET_FIND_TERMS)){
-                    searchStudentTerms = inputStream.readObject();
-                    studentsList.setStudentList(studentsListBuffer.findStudents((SearchStudentTerms)searchStudentTerms));
+                    searchStudentTerms = (SearchStudentTerms)inputStream.readObject();
+                    studentsList.setStudentList(studentsListBuffer.findStudents(searchStudentTerms));
+                } else if (command.equals(CommandConst.SAVE)){
+                    String nameFile = (String) inputStream.readObject();
+                    new XMLFile(nameFile,studentsList).writeFile();
+                } else if (command.equals(CommandConst.GET_FILE_LIST)){
+                    File[] files = new File(CommandConst.DIRICTORY).listFiles();
+                    List<String> filesName = new ArrayList<String>();
+                    for (File currentFile : files) {
+                        if (currentFile.getName().contains(".xml")) {
+                            filesName.add(currentFile.getName());
+                        }
+                    }
+                    outputStream.writeObject(filesName);
+                } else if (command.equals(CommandConst.OPEN)){
+                    String nameFile = (String) inputStream.readObject();
+                    new XMLFile(nameFile,studentsList).readFile();
                 }
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e){
           e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
         } finally {
             try {
                 outputStream.close();
